@@ -1,80 +1,157 @@
-# 🗳️ Election Campaign Mock API
+# 🗳️ Election Campaign War-Room Mock API
 
 ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
 ![json-server](https://img.shields.io/badge/json--server-mock%20api-blue)
+![API](https://img.shields.io/badge/API-REST-blue)
 ![Dataset](https://img.shields.io/badge/dataset-realistic-orange)
 ![Campaign Analytics](https://img.shields.io/badge/domain-political%20analytics-purple)
 ![License](https://img.shields.io/badge/license-MIT-lightgrey)
 
-A **realistic mock REST API** designed to power an **Election Campaign Analytics Dashboard**.
+A **realistic mock REST API** designed to simulate the data infrastructure used in a **political campaign war-room analytics dashboard**.
 
-This project simulates the **data infrastructure of a modern political campaign war-room**, enabling frontend developers to build sophisticated **analytics dashboards** without requiring a production backend.
+The project generates a structured synthetic dataset representing how modern election campaigns manage:
 
-The system models **real campaign workflows** including:
+- booth-level operations
+- volunteer coordination
+- voter outreach
+- issue tracking
+- influencer networks
+- opposition monitoring
 
-* booth-level campaign organization
-* volunteer management
-* door-to-door outreach
-* voter sentiment collection
-* issue tracking
-* political influencer identification
-* opposition activity monitoring
-
----
-
-# 👨‍💻 Author
-
-**Rishu Mishra**
-
-This project was created by **Rishu Mishra** as part of a frontend engineering portfolio to demonstrate the design and development of a **data-driven political campaign analytics dashboard**.
-
-The architecture and dataset design were developed **with mentorship from ChatGPT**.
-
-The data model also incorporates **first-hand insights from political ground work during recent Bihar Legislative Assembly election campaigns**, reflecting how real campaign teams organize:
-
-* booth-level operations
-* volunteer coordination
-* field intelligence gathering
-* political outreach planning
+The API is powered by **json-server** and a dataset generator built using **@faker-js/faker**, allowing frontend developers to build **analytics dashboards and campaign monitoring interfaces without requiring a production backend**.
 
 ---
 
-# 🎯 Project Goal
+# ⚡ Quick Start
 
-The goal of this project is to simulate the **data layer of a political campaign command center**, allowing developers to build dashboards similar to those used in **real election campaign war rooms**.
+Clone the repository:
 
-Campaign leadership teams typically monitor:
+```bash
+git clone https://github.com/your-repository/mock-api.git
+cd mock-api
+```
 
-* volunteer deployment
-* voter outreach
-* booth-level performance
-* public sentiment
-* key local influencers
-* opposition activity
+Install dependencies:
 
-This repository provides a **realistic mock dataset** for such systems.
+```bash
+npm install
+```
+
+Generate the dataset:
+
+```bash
+node generateData.js
+```
+
+Start the mock API:
+
+```bash
+npx json-server --watch db.json --port 3000
+```
+
+API will be available at:
+
+```
+http://localhost:3000
+```
+
+---
+
+# 📊 Example Dashboard (Frontend)
+
+This API is designed to power analytics dashboards such as:
+
+- campaign war-room overview
+- volunteer management
+- booth-level outreach analytics
+- voter sentiment monitoring
+- influencer network tracking
+- opposition activity monitoring
+
+Example dashboard modules may include:
+
+- Campaign Overview
+- Volunteer Operations
+- Booth Performance
+- Political Intelligence
+- Strategic Monitoring
+
+---
+
+# 🧠 Data Model Overview
+
+The dataset models a simplified campaign operations structure.
+
+Core relationships include:
+
+- Volunteers assigned to booths
+- Booths reporting outreach progress
+- Door-to-door visits generating voter feedback
+- Volunteer managers submitting daily intelligence reports
+- Influencer identification based on field observations
+
+---
+
+# 🏗️ System Architecture
+
+The mock API simulates the backend data layer used by campaign analytics dashboards.
+
+```
+Frontend Dashboard (Angular / React / Vue)
+              │
+              │ REST API
+              ▼
+         json-server
+              │
+              ▼
+           db.json
+              │
+              ▼
+       generateData.js
+   (faker-based dataset generator)
+```
+
+This architecture allows developers to build frontend applications while working with **realistic operational datasets**.
+
+---
+
+# 🎯 Project Objective
+
+Modern political campaigns rely on centralized **war-room dashboards** to monitor field operations and support strategic decision-making.
+
+Campaign leadership teams track metrics such as:
+
+- volunteer deployment
+- booth-level campaign coverage
+- voter outreach performance
+- voter sentiment
+- influential local actors
+- opposition campaign activity
+
+This repository simulates the **data layer of such systems**, enabling developers to prototype and build **campaign analytics dashboards using realistic data structures**.
 
 ---
 
 # 🚀 Key Features
 
-✔ Realistic campaign intelligence dataset
-✔ 1000+ generated records
-✔ War-room level campaign analytics
-✔ REST-style mock API using json-server
-✔ Supports filtering, sorting, pagination, and search
-✔ Designed specifically for **Angular analytics dashboards**
+✔ Realistic campaign intelligence dataset  
+✔ ~1600 generated records  
+✔ Multi-domain campaign data model  
+✔ REST-style API using **json-server**  
+✔ Synthetic dataset generator using **@faker-js/faker**  
+✔ Supports filtering, sorting, search, and pagination  
+✔ Designed for **Angular / React / Vue dashboards**
 
 ---
 
 # 🧰 Technology Stack
 
-| Technology  | Purpose                            |
-| ----------- | ---------------------------------- |
-| Node.js     | Runtime environment                |
-| json-server | Mock REST API                      |
-| Faker.js    | Synthetic campaign data generation |
-| JSON        | Dataset storage                    |
+| Technology      | Purpose                      |
+| --------------- | ---------------------------- |
+| Node.js         | Runtime environment          |
+| json-server     | Mock REST API                |
+| @faker-js/faker | Synthetic dataset generation |
+| JSON            | Dataset storage              |
 
 ---
 
@@ -93,49 +170,49 @@ mock-api
 
 # 📊 Dataset Architecture
 
-The generated dataset simulates a **mid-scale legislative assembly campaign**.
+The dataset simulates a **mid-scale legislative assembly campaign**.
 
-The data is divided into **three intelligence layers**.
+The data model is divided into three operational intelligence layers.
 
 ---
 
-# 1️⃣ Campaign Operations
+## 1️⃣ Campaign Operations
 
-Operational data generated from field activity.
+Operational data generated from field activities.
 
 | Dataset       | Description                               |
 | ------------- | ----------------------------------------- |
 | volunteers    | Campaign volunteers and field workers     |
-| booths        | Booth-level voter outreach data           |
+| booths        | Booth-level campaign organization         |
 | events        | Campaign meetings and outreach programs   |
 | issues        | Local issues reported during field visits |
 | dailyActivity | Daily campaign performance metrics        |
 
 ---
 
-# 2️⃣ Field Intelligence
+## 2️⃣ Field Intelligence
 
-Data reported by volunteer managers.
+Data collected during field outreach activities.
 
 | Dataset             | Description                         |
 | ------------------- | ----------------------------------- |
 | doorToDoorVisits    | Door-to-door voter outreach reports |
-| volunteerAttendance | Volunteer attendance tracking       |
+| volunteerAttendance | Volunteer participation tracking    |
 | voterFeedback       | Voter sentiment and feedback        |
-| boothProgress       | Booth-level campaign penetration    |
+| boothProgress       | Booth-level outreach penetration    |
 
 ---
 
-# 3️⃣ Strategic War-Room Intelligence
+## 3️⃣ Strategic War-Room Intelligence
 
-Information used by campaign leadership.
+Data used by campaign leadership for monitoring and strategy.
 
-| Dataset                   | Description                                         |
-| ------------------------- | --------------------------------------------------- |
-| influencerRecommendations | Influential local figures recommended by volunteers |
-| oppositionActivity        | Opposition campaign activity reports                |
-| managerReports            | Daily reports submitted by volunteer managers       |
-| analytics                 | Dashboard summary statistics                        |
+| Dataset                   | Description                                        |
+| ------------------------- | -------------------------------------------------- |
+| influencerRecommendations | Influential local figures identified by volunteers |
+| oppositionActivity        | Opposition campaign activity reports               |
+| managerReports            | Field intelligence reports from managers           |
+| analytics                 | Aggregated campaign performance metrics            |
 
 ---
 
@@ -150,7 +227,7 @@ The generator produces approximately:
 | Events                     | ~25     |
 | Issues                     | ~80     |
 | Daily Activity             | ~30     |
-| Door-to-door reports       | ~400    |
+| Door-to-door visits        | ~400    |
 | Volunteer attendance       | ~500    |
 | Voter feedback             | ~300    |
 | Booth progress             | ~40     |
@@ -158,76 +235,20 @@ The generator produces approximately:
 | Opposition activity        | ~60     |
 | Manager reports            | ~30     |
 
-Total: **~1,600 records**
+Total dataset size: **~1600 records**
 
-This dataset size ensures dashboards can demonstrate:
+This scale allows dashboards to demonstrate:
 
-* filtering
-* pagination
-* analytics charts
-* campaign intelligence insights
-
----
-
-# ⚙️ Installation
-
-Clone the repository:
-
-```
-git clone https://github.com/your-repository/mock-api.git
-```
-
-Navigate to the project directory:
-
-```
-cd mock-api
-```
-
-Install dependencies:
-
-```
-npm install
-```
+- filtering
+- pagination
+- analytics charts
+- campaign intelligence monitoring
 
 ---
 
-# 🧪 Generate Campaign Dataset
+# 🔌 API Endpoints
 
-Run the generator script:
-
-```
-node generateData.js
-```
-
-This will create:
-
-```
-db.json
-```
-
-with a full campaign intelligence dataset.
-
----
-
-# ▶ Start Mock API Server
-
-Run:
-
-```
-npx json-server --watch db.json --port 3000
-```
-
-Server starts at:
-
-```
-http://localhost:3000
-```
-
----
-
-# 🔌 Available API Endpoints
-
-### Campaign Operations
+## Campaign Operations
 
 ```
 GET /volunteers
@@ -237,9 +258,7 @@ GET /issues
 GET /dailyActivity
 ```
 
----
-
-### Field Intelligence
+## Field Intelligence
 
 ```
 GET /doorToDoorVisits
@@ -248,9 +267,7 @@ GET /voterFeedback
 GET /boothProgress
 ```
 
----
-
-### Strategic Intelligence
+## Strategic Intelligence
 
 ```
 GET /influencerRecommendations
@@ -287,68 +304,116 @@ Sorting
 /booths?_sort=votersContacted&_order=desc
 ```
 
-These features simulate **real backend behavior**, enabling realistic frontend development.
+These features simulate **real backend query capabilities**, allowing dashboards to behave like production systems.
+
+---
+
+# 📄 Example Dataset Record
+
+Example volunteer record:
+
+```json
+{
+  "id": 1,
+  "name": "Amit Kumar",
+  "phone": "9876543210",
+  "booth": 12,
+  "role": "Volunteer",
+  "active": true
+}
+```
 
 ---
 
 # 🖥️ Angular Integration Example
 
-Example Angular service call:
+Example Angular service request:
 
 ```typescript
-this.http.get("http://localhost:3000/volunteers")
+this.http.get("http://localhost:3000/volunteers");
 ```
 
-The Angular frontend can use this API to render:
+This API can power modules such as:
 
-* campaign overview dashboards
-* volunteer management panels
-* booth analytics charts
-* voter sentiment dashboards
-* influencer tracking systems
-* opposition activity monitoring
+- campaign overview dashboards
+- volunteer management panels
+- booth analytics charts
+- voter sentiment dashboards
+- influencer mapping
+- opposition monitoring
 
 ---
 
 # 📈 Example Dashboard Modules
 
-A typical campaign analytics dashboard could include:
+A campaign war-room dashboard built on this API may include:
 
 ### Campaign Overview
 
-* Total volunteers
-* Booth coverage
-* Events conducted
-* Voters contacted
+- Total volunteers
+- Booth coverage
+- Events conducted
+- Voters contacted
 
 ### Volunteer Operations
 
-* Volunteer management
-* Attendance tracking
-* Door-to-door outreach
+- Volunteer management
+- Attendance tracking
+- Door-to-door outreach
 
-### Booth Performance
+### Booth Analytics
 
-* Booth-level outreach metrics
-* Voter sentiment analysis
+- Booth-level outreach performance
+- Voter sentiment distribution
 
 ### Political Intelligence
 
-* Influencer mapping
-* Opposition activity tracking
+- Influencer identification
+- Opposition activity monitoring
 
-### War-Room Analytics
+### Strategic Monitoring
 
-* Daily campaign reports
-* Strategic decision metrics
+- Daily campaign reports
+- outreach progress metrics
+- operational alerts
+
+---
+
+# 👨‍💻 Author
+
+**Rishu Mishra**
+
+Electronics Engineer — VIT Vellore  
+Former Web Developer (~3 years industry experience)  
+UPSC aspirant and technology enthusiast
+
+This project combines **software engineering experience with insights from grassroots political campaign operations**, including exposure to **Bihar Legislative Assembly election field activities**.
+
+---
+
+# 💡 Why This Project Exists
+
+Many frontend dashboards require realistic backend data for development and testing.
+
+However, most public datasets do not simulate **operational campaign data structures** such as booth management, volunteer deployment, and voter sentiment reporting.
+
+This project was created to provide a **realistic mock backend for campaign analytics dashboards**, enabling developers to build data-driven interfaces without relying on production systems.
+
+---
+
+# 🤝 Contributing
+
+Contributions, suggestions, and improvements are welcome.
+
+If you would like to extend the dataset model or improve the API structure, feel free to open an issue or submit a pull request.
 
 ---
 
 # ⚠ Disclaimer
 
-This project is intended **only for educational and portfolio purposes**.
+This project is intended **only for educational, research, and portfolio purposes**.
 
-All data is **synthetically generated** and does not represent real voters or individuals.
+All data is **synthetically generated** and does not represent real individuals or voters.
 
 ---
 
@@ -360,4 +425,21 @@ Copyright (c) 2026 **Rishu Mishra**
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files to deal in the Software without restriction.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
+---
+
+# 🔮 Future Enhancements
+
+Potential extensions include:
+
+- geospatial campaign data
+- booth heatmaps
+- demographic voter segmentation
+- campaign finance tracking
+- social media analytics
+- predictive election modeling
+
+---
+
+# Final Note
+
+This repository demonstrates how structured operational data can power **campaign analytics dashboards and decision-support systems used in complex political field operations**.
