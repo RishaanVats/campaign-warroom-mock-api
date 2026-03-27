@@ -210,15 +210,19 @@ for (let i = 1; i <= 300; i++) {
 // ----------------------------
 
 for (let i = 1; i <= booths.length; i++) {
+  const targetVoters = faker.number.int({ min: 800, max: 2000 });
+  const votersReached = faker.number.int({ min: 200, max: targetVoters });
+  const supportersIdentified = faker.number.int({ min: 100, max: votersReached });
 
   boothProgress.push({
     id: i,
     booth: i,
-    targetVoters: faker.number.int({ min: 800, max: 1200 }),
-    votersReached: faker.number.int({ min: 200, max: 900 }),
-    supportersIdentified: faker.number.int({ min: 100, max: 400 }),
-    undecided: faker.number.int({ min: 50, max: 200 }),
-    opposition: faker.number.int({ min: 20, max: 150 })
+    boothName: faker.location.street() + ' - ' + faker.location.direction(),
+    targetVoters: targetVoters,
+    votersReached: votersReached,
+    supportersIdentified: supportersIdentified,
+    undecided: faker.number.int({ min: 50, max: 300 }),
+    coverage: faker.number.int({ min: 20, max: 100 })
   })
 
 }
@@ -385,15 +389,15 @@ const analytics = {
 
   outreachStats: {
     doorVisits: doorToDoorVisits.length,
-    votersReached: doorToDoorVisits.reduce((sum,v)=>sum+v.votersContacted,0),
-    housesVisited: doorToDoorVisits.reduce((sum,v)=>sum+v.housesVisited,0)
+    votersReached: doorToDoorVisits.reduce((sum, v) => sum + v.votersContacted, 0),
+    housesVisited: doorToDoorVisits.reduce((sum, v) => sum + v.housesVisited, 0)
   },
 
   sentimentStats: {
-    supporters: voterFeedback.filter(v=>v.sentiment==="Support").length,
-    neutral: voterFeedback.filter(v=>v.sentiment==="Neutral").length,
-    opposition: voterFeedback.filter(v=>v.sentiment==="Opposition").length,
-    undecided: voterFeedback.filter(v=>v.sentiment==="Undecided").length
+    supporters: voterFeedback.filter(v => v.sentiment === "Support").length,
+    neutral: voterFeedback.filter(v => v.sentiment === "Neutral").length,
+    opposition: voterFeedback.filter(v => v.sentiment === "Opposition").length,
+    undecided: voterFeedback.filter(v => v.sentiment === "Undecided").length
   }
 
 }
