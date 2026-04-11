@@ -264,6 +264,7 @@ GET /dailyActivity
 GET /doorToDoorVisits
 GET /volunteerAttendance
 GET /voterFeedback
+GET /voterFeedback/byZone
 GET /boothProgress
 ```
 
