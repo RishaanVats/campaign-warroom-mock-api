@@ -21,6 +21,12 @@ The project generates a structured synthetic dataset representing how modern ele
 The API is powered by **json-server** and a dataset generator built using **@faker-js/faker**, allowing frontend developers to build **analytics dashboards and campaign monitoring interfaces without requiring a production backend**.
 
 ---
+## 🔗 Live API
+
+[https://sudarshan-warroom-api.onrender.com](https://sudarshan-warroom-api.onrender.com)
+
+**Note:** Free-tier server may take a few seconds to wake up.
+---
 
 # ⚡ Quick Start
 
