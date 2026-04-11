@@ -15,6 +15,7 @@ const doorToDoorVisits = []
 const volunteerAttendance = []
 const voterFeedback = []
 const boothProgress = []
+const sentimentTrend = []
 
 const influencerRecommendations = []
 const oppositionActivity = []
@@ -28,7 +29,7 @@ const warroomAlerts = []
 // BOOTHS
 // ----------------------------
 
-for (let i = 1; i <= 40; i++) {
+for (let i = 1; i <= 60; i++) {
 
   const totalVoters = faker.number.int({ min: 900, max: 1400 })
   const contacted = faker.number.int({ min: 200, max: totalVoters })
@@ -48,21 +49,44 @@ for (let i = 1; i <= 40; i++) {
 // VOLUNTEERS
 // ----------------------------
 
-for (let i = 1; i <= 120; i++) {
+for (let i = 1; i <= 160; i++) {
+  const booth = faker.number.int({ min: 1, max: 50 });
+  function getZone(input) {
+    switch (true) {
+      case (input >= 1 && input <= 10):
+        return "zone 1";
+      case (input >= 11 && input <= 20):
+        return "zone 2";
+      case (input >= 21 && input <= 30):
+        return "zone 3";
+      case (input >= 31 && input <= 40):
+        return "zone 4";
+      case (input >= 41 && input <= 50):
+        return "zone 5";
+      default:
+        return "unknown zone";
+    }
+  }
 
   volunteers.push({
     id: i,
     name: faker.person.fullName(),
-    phone: faker.string.numeric(10),
-    booth: faker.number.int({ min: 1, max: 40 }),
+    phone: `+91 ${faker.helpers.fromRegExp(/[6-9][0-9]{4}/)} ${faker.helpers.fromRegExp(/[0-9]{5}/)}`,
+    zone: getZone(booth),
+    booth: booth,
+    location: "Ward " + faker.number.int({ min: 1, max: 60 }),
     role: faker.helpers.arrayElement([
       "Volunteer",
       "Booth Worker",
       "Coordinator",
       "Social Media",
-      "Field Organizer"
+      "Field Organizer",
+      "Logistics Lead"
     ]),
-    active: faker.datatype.boolean()
+    status: faker.helpers.arrayElement(["Active", "On Field", "Inactive", "Alert"]),
+    voterCoverage: faker.number.int({ min: 0, max: 300 }), // Number of assigned voters contacted
+    active: faker.datatype.boolean(),
+    lastSync: faker.date.recent({ days: 2 }).toISOString()
   })
 
 }
@@ -180,16 +204,16 @@ for (let i = 1; i <= 500; i++) {
 // VOTER FEEDBACK
 // ----------------------------
 
-for (let i = 1; i <= 300; i++) {
-
+for (let i = 1; i <= 8900; i++) {
+const volunteer = faker.helpers.arrayElement(volunteers)
   voterFeedback.push({
     id: i,
-    booth: faker.number.int({ min: 1, max: 40 }),
+    booth: faker.number.int({ min: 1, max: volunteer.booth }),
     sentiment: faker.helpers.arrayElement([
-      "Support",
-      "Neutral",
-      "Opposition",
-      "Undecided"
+      "support",
+      "neutral",
+      "opposition",
+      "undecided"
     ]),
     issue: faker.helpers.arrayElement([
       "Road",
@@ -222,11 +246,26 @@ for (let i = 1; i <= booths.length; i++) {
     votersReached: votersReached,
     supportersIdentified: supportersIdentified,
     undecided: faker.number.int({ min: 50, max: 300 }),
-    coverage: faker.number.int({ min: 20, max: 100 })
+    coverage: faker.number.int({ min: 30, max: 100 })
   })
 
 }
 
+// ----------------------------
+// SENTIMENT TREND
+// ----------------------------
+
+for (let i = 1; i <= 10; i++) {
+
+  sentimentTrend.push({
+    id: i,
+    supporters: faker.number.int({ min: 24, max: 66 }),
+    neutral: faker.number.int({ min: 24, max: 66 }),
+    opposition: faker.number.int({ min: 24, max: 66 }),
+    undecided: faker.number.int({ min: 10, max: 40 }),
+  })
+
+}
 
 // ----------------------------
 // INFLUENCER RECOMMENDATIONS
@@ -241,7 +280,7 @@ for (let i = 1; i <= 80; i++) {
     name: faker.person.fullName(),
     booth: faker.number.int({ min: 1, max: 40 }),
     occupation: faker.helpers.arrayElement([
-      "Teacher",
+      "Teacher/Professor",
       "Business Owner",
       "Doctor",
       "Farmer Leader",
@@ -252,18 +291,21 @@ for (let i = 1; i <= 80; i++) {
       "Medium",
       "High"
     ]),
-    estimatedInfluence: faker.number.int({ min: 50, max: 400 }),
+    estimatedInfluence: faker.number.int({ min: 100, max: 4000 }),
     recommendedBy: volunteer.id,
+    dpUrl: "",
     supportLikelihood: faker.helpers.arrayElement([
       "Support",
       "Neutral",
       "Opposition"
     ]),
-    contacted: faker.datatype.boolean(),
+    // contacted: faker.datatype.boolean(),
     status: faker.helpers.arrayElement([
+      "Confirmed",
       "Pending",
-      "Meeting Scheduled",
-      "Joined Campaign"
+      "Contacted",
+      "New Lead",
+      "VIP"
     ])
   })
 
@@ -419,6 +461,7 @@ const db = {
   volunteerAttendance,
   voterFeedback,
   boothProgress,
+  sentimentTrend,
 
   influencerRecommendations,
   oppositionActivity,
