@@ -24,6 +24,7 @@ The API is powered by **json-server** and a dataset generator built using **@fak
 ## 🔗 Live API
 
 [https://sudarshan-warroom-api.onrender.com](https://sudarshan-warroom-api.onrender.com)
+Note: Please note that initial loading may take up to a minute due to Render’s free tier delay to start up if it hasn't been visited in a while..
 
 **Note:** Free-tier server may take a few seconds to wake up.
 ---
