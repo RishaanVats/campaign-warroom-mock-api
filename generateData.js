@@ -29,15 +29,17 @@ const warroomAlerts = []
 // BOOTHS
 // ----------------------------
 
-for (let i = 1; i <= 60; i++) {
+for (let i = 1; i <= 50; i++) {
 
   const totalVoters = faker.number.int({ min: 900, max: 1400 })
   const contacted = faker.number.int({ min: 200, max: totalVoters })
+  const zone = Math.ceil(i / 10); // 1–10 → 1, 11–20 → 2
 
   booths.push({
     id: i,
     boothNumber: i,
-    area: `Ward ${i}`,
+    zone: `zone ` + zone,
+    area: `ward ${i}`,
     totalVoters,
     votersContacted: contacted
   })
@@ -72,7 +74,7 @@ for (let i = 1; i <= 160; i++) {
     id: i,
     name: faker.person.fullName(),
     phone: `+91 ${faker.helpers.fromRegExp(/[6-9][0-9]{4}/)} ${faker.helpers.fromRegExp(/[0-9]{5}/)}`,
-    zone: getZone(booth),
+    zone: 'zone ' + Math.ceil(booth / 10), // 1–10 → 1, 11–20 → 2,
     booth: booth,
     location: "Ward " + faker.number.int({ min: 1, max: 60 }),
     role: faker.helpers.arrayElement([
