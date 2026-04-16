@@ -24,6 +24,8 @@ const managerReports = []
 const campaignTimeline = []
 const warroomAlerts = []
 
+const warRoomReports = []
+
 
 // ----------------------------
 // BOOTHS
@@ -207,7 +209,7 @@ for (let i = 1; i <= 500; i++) {
 // ----------------------------
 
 for (let i = 1; i <= 8900; i++) {
-const volunteer = faker.helpers.arrayElement(volunteers)
+  const volunteer = faker.helpers.arrayElement(volunteers)
   voterFeedback.push({
     id: i,
     booth: faker.number.int({ min: 1, max: volunteer.booth }),
@@ -446,6 +448,168 @@ const analytics = {
 
 }
 
+// ----------------------------
+// WAR ROOM REPORTS (SINGLE API)
+// ----------------------------
+
+function getZoneFromBooth(booth) {
+  return `zone ${Math.ceil(booth / 10)}`
+}
+
+// ---------- KPI CALCULATIONS ----------
+
+// Campaign Health (based on coverage + sentiment proxy)
+const avgCoverage =
+  boothProgress.reduce((sum, b) => sum + b.coverage, 0) / boothProgress.length
+
+const campaignHealthScore = Math.round(avgCoverage)
+
+// Field Momentum (based on last 7 days activity vs previous)
+const sortedTimeline = [...campaignTimeline].sort(
+  (a, b) => new Date(a.date) - new Date(b.date)
+)
+
+const last7 = sortedTimeline.slice(-7)
+const prev7 = sortedTimeline.slice(-14, -7)
+
+const sum = (arr, key) => arr.reduce((s, i) => s + i[key], 0)
+
+const momentumNow = sum(last7, "votersReached")
+const momentumPrev = sum(prev7, "votersReached")
+
+let fieldMomentum = "MEDIUM"
+if (momentumNow > momentumPrev * 1.1) fieldMomentum = "HIGH"
+else if (momentumNow < momentumPrev * 0.9) fieldMomentum = "LOW"
+
+// Critical Alerts
+const criticalAlertsCount = warroomAlerts.filter(
+  a => a.severity === "Critical" || a.severity === "High"
+).length
+
+// Days to Election (mock fixed future)
+const electionDate = new Date()
+electionDate.setDate(electionDate.getDate() + 42)
+
+const today = new Date()
+const daysToElection = Math.ceil(
+  (electionDate - today) / (1000 * 60 * 60 * 24)
+)
+
+// ---------- RADAR METRICS ----------
+
+function getMetricThisWeek(metricFn) {
+  return metricFn(last7)
+}
+
+function getMetricLastWeek(metricFn) {
+  return metricFn(prev7)
+}
+
+const radarMetrics = [
+  {
+    metric: "Volunteers",
+    thisWeek: Math.round(getMetricThisWeek(arr => sum(arr, "volunteersActive")) / 7),
+    lastWeek: Math.round(getMetricLastWeek(arr => sum(arr, "volunteersActive")) / 7)
+  },
+  {
+    metric: "Doors Knocked",
+    thisWeek: sum(last7, "housesVisited"),
+    lastWeek: sum(prev7, "housesVisited")
+  },
+  {
+    metric: "Sentiment",
+    thisWeek: faker.number.int({ min: 60, max: 90 }),
+    lastWeek: faker.number.int({ min: 50, max: 85 })
+  },
+  {
+    metric: "Booth Coverage",
+    thisWeek: Math.round(avgCoverage),
+    lastWeek: Math.max(40, Math.round(avgCoverage - faker.number.int({ min: 2, max: 8 })))
+  },
+  {
+    metric: "Influencers",
+    thisWeek: influencerRecommendations.filter(i => i.status === "Confirmed").length,
+    lastWeek: Math.max(0, influencerRecommendations.length - faker.number.int({ min: 5, max: 20 }))
+  },
+  {
+    metric: "Pledges",
+    thisWeek: voterFeedback.filter(v => v.sentiment === "support").length,
+    lastWeek: Math.max(0, voterFeedback.length - faker.number.int({ min: 200, max: 800 }))
+  }
+]
+
+// ---------- ACTION ITEMS ----------
+
+const actionItems = warroomAlerts
+  .slice(0, 4)
+  .map(alert => ({
+    id: alert.id,
+    text: `${getZoneFromBooth(alert.booth)} — ${alert.description}`,
+    severity: alert.severity
+  }))
+
+// ---------- TABLE SUMMARY ----------
+
+const tableSummary = [
+  {
+    metric: "Volunteers Active",
+    target: 1200,
+    actual: analytics.summary.activeVolunteers
+  },
+  {
+    metric: "Doors Knocked",
+    target: 35000,
+    actual: analytics.outreachStats.housesVisited
+  },
+  {
+    metric: "Voter Pledges",
+    target: 12000,
+    actual: voterFeedback.filter(v => v.sentiment === "support").length
+  },
+  {
+    metric: "Booth Coverage",
+    target: 85,
+    actual: Math.round(avgCoverage)
+  },
+  {
+    metric: "Influencer Confirmed",
+    target: 130,
+    actual: influencerRecommendations.filter(i => i.status === "Confirmed").length
+  }
+].map(item => {
+  const variance = item.actual - item.target
+  const percent = ((variance / item.target) * 100).toFixed(1)
+
+  return {
+    ...item,
+    variance,
+    percent: `${percent}%`,
+    status:
+      variance >= 0
+        ? "EXCEEDING"
+        : variance > -item.target * 0.1
+          ? "ON TRACK"
+          : variance > -item.target * 0.25
+            ? "AT RISK"
+            : "BELOW TARGET"
+  }
+})
+
+// ---------- FINAL DASHBOARD OBJECT ----------
+
+warRoomReports.push({
+  campaignHealth: {
+    score: campaignHealthScore,
+    status: campaignHealthScore > 75 ? "Strong" : "Moderate"
+  },
+  fieldMomentum,
+  criticalAlerts: criticalAlertsCount,
+  daysToElection,
+  radarMetrics,
+  actionItems,
+  tableSummary
+});
+
 
 // ----------------------------
 // DATABASE EXPORT
@@ -472,8 +636,9 @@ const db = {
   campaignTimeline,
   warroomAlerts,
 
-  analytics
+  analytics,
 
+  warRoomReports
 }
 
 
