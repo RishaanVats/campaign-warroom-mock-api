@@ -544,8 +544,9 @@ const actionItems = warroomAlerts
   .slice(0, 4)
   .map(alert => ({
     id: alert.id,
-    text: `${getZoneFromBooth(alert.booth)} — ${alert.description}`,
-    severity: alert.severity
+    description: `${getZoneFromBooth(alert.booth)} — ${alert.description}`,
+    severity: alert.severity,
+    reportedAt: alert.reportedAt
   }))
 
 // ---------- TABLE SUMMARY ----------
