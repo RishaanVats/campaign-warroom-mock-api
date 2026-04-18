@@ -172,14 +172,21 @@ for (let i = 1; i <= 30; i++) {
 for (let i = 1; i <= 400; i++) {
 
   const volunteer = faker.helpers.arrayElement(volunteers)
+  const team = Math.ceil(volunteer.id / 8); // 1–8 → 1, 9–16 → 2,...
+
+  const votersContacted = faker.number.int({ min: 10, max: 80 });
 
   doorToDoorVisits.push({
     id: i,
     volunteerId: volunteer.id,
+    team: `Team ${team}`,
     booth: volunteer.booth,
     date: faker.date.recent({ days: 30 }),
     housesVisited: faker.number.int({ min: 5, max: 30 }),
-    votersContacted: faker.number.int({ min: 10, max: 80 })
+    noContactDoors: faker.number.int({ min: 1, max: 20}),
+    votersContacted: votersContacted,
+    contactRate: faker.number.int({ min: 10, max: 95 }),
+    pledgesSecured: faker.number.int({ min: 10, max: votersContacted })
   })
 
 }
