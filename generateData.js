@@ -26,6 +26,7 @@ const warroomAlerts = []
 
 const warRoomReports = []
 
+const zonePerformanceReports = [];
 
 // ----------------------------
 // BOOTHS
@@ -183,7 +184,7 @@ for (let i = 1; i <= 400; i++) {
     booth: volunteer.booth,
     date: faker.date.recent({ days: 30 }),
     housesVisited: faker.number.int({ min: 5, max: 30 }),
-    noContactDoors: faker.number.int({ min: 1, max: 20}),
+    noContactDoors: faker.number.int({ min: 1, max: 20 }),
     votersContacted: votersContacted,
     contactRate: faker.number.int({ min: 10, max: 95 }),
     pledgesSecured: faker.number.int({ min: 10, max: votersContacted })
@@ -620,6 +621,43 @@ warRoomReports.push({
 
 
 // ----------------------------
+// ZONE PERFORMANCE
+// ----------------------------
+
+const uniqueZones = [...new Set(booths.map(b => b.zone))].sort();
+
+uniqueZones.forEach((zoneName, index) => {
+  const zoneBooths = booths.filter(b => b.zone === zoneName);
+  const zoneBoothIds = zoneBooths.map(b => b.id);
+  const zoneVisits = doorToDoorVisits.filter(v => zoneBoothIds.includes(v.booth));
+
+  const doorsAssigned = zoneBooths.reduce((sum, b) => sum + b.totalVoters, 0);
+  const knocked = zoneVisits.reduce((sum, v) => sum + (v.housesVisited + v.noContactDoors), 0);
+  const contacted = zoneVisits.reduce((sum, v) => sum + v.votersContacted, 0);
+  const pledges = zoneVisits.reduce((sum, v) => sum + v.pledgesSecured, 0);
+  const coveragePercent = (knocked / doorsAssigned) * 100;
+
+  // Relational Lookup for Lead
+  const lead = volunteers.find(v => v.zone === zoneName && v.role === "Coordinator");
+
+  zonePerformanceReports.push({
+    id: index + 1,
+    zone: zoneName.replace('zone', 'Zone'),
+    teamLead: lead ? lead.name : "Unassigned",
+    doorsAssigned,
+    knocked,
+    contacted,
+    pledges,
+    coverage: {
+      percent: coveragePercent.toFixed(1),
+      status: coveragePercent > 80 ? "high" : coveragePercent > 60 ? "medium" : "low"
+    },
+    alert: coveragePercent < 60 // Triggers warning icon based on logic
+  });
+});
+
+
+// ----------------------------
 // DATABASE EXPORT
 // ----------------------------
 
@@ -646,7 +684,9 @@ const db = {
 
   analytics,
 
-  warRoomReports
+  warRoomReports,
+
+  zonePerformanceReports, // New dynamic endpoint
 }
 
 
